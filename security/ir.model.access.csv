@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_ml_learning_exercise,ml_learning.exercise,model_ml_learning_exercise,base.group_user,1,1,1,1
+access_ml_learning_test,ml_learning.test,model_ml_learning_test,base.group_user,1,1,1,1
+access_ml_learning_level,ml_learning.level,model_ml_learning_level,base.group_user,1,1,1,1
+access_ml_learning_progress,ml_learning.progress,model_ml_learning_progress,base.group_user,1,1,1,1
+access_ml_learning_test_question,ml_learning.test_question,model_ml_learning_test_question,base.group_user,1,1,1,1

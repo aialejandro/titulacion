@@ -1,0 +1,187 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+
+    <record id="exercise_view_tree" model="ir.ui.view">
+      <field name="name">exercise.view.tree</field>
+      <field name="model">ml_learning.exercise</field>
+      <field name="arch" type="xml">
+        <tree string="">
+          <field name="id" />
+          <field name="question" />
+          <field name="intelligence_type" />
+        </tree>
+      </field>
+    </record>
+
+    <record id="test_question_view_tree" model="ir.ui.view">
+      <field name="name">test.question.view.tree</field>
+      <field name="model">ml_learning.test_question</field>
+      <field name="arch" type="xml">
+        <tree string="">
+          <field name="exercise_id" />
+          <field name="user_id" />
+          <field name="answered_ok" />
+        </tree>
+      </field>
+    </record>
+
+    <record id="progress_view_form" model="ir.ui.view">
+      <field name="name">progress.view.form</field>
+      <field name="model">ml_learning.progress</field>
+      <field name="arch" type="xml">
+        <form string="">
+          <sheet>
+            <group>
+              <group>
+                <field name="score" readonly="1"/>
+                <field name="level_id"  readonly="1"/>
+              </group>
+              <group>
+                <field name="level_image" nolabel="1" readonly="1" widget="image"/>
+              </group>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <record id="exercise_view_form" model="ir.ui.view">
+      <field name="name">exercise.view.form</field>
+      <field name="model">ml_learning.exercise</field>
+      <field name="arch" type="xml">
+        <form string="">
+          <sheet>
+            <group>
+              <group>
+                <field name="question" />
+                <field name="intelligence_type" />
+              </group>
+              <group>
+                <field name="answer_1" />
+                <field name="answer_2" />
+                <field name="answer_3" />
+                <field name="answer_4" />
+                <field name="correct_answer" />
+              </group>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <record id="level_view_form" model="ir.ui.view">
+      <field name="name">level.view.form</field>
+      <field name="model">ml_learning.level</field>
+      <field name="arch" type="xml">
+        <form string="">
+          <sheet>
+            <group>
+              <group>
+                <field name="name" />
+                <field name="image" widget='image'/>
+              </group>
+              <group>
+                <field name="min_score" />
+                <field name="max_score" />
+              </group>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <record id="test_view_form" model="ir.ui.view">
+      <field name="name">test.view.form</field>
+      <field name="model">ml_learning.test</field>
+      <field name="arch" type="xml">
+        <form string="">
+          <group>
+            <div attrs="{'invisible':[('start','=',False)]}">
+                De click en empezar para iniciar los ejercicios.
+            </div>
+            <field name="start" invisible="1"/>
+            <field name="show_wrong_answer_message" invisible="1"/>
+            <field name="show_correct_answer_message" invisible="1"/>
+            <field name="question" attrs="{'invisible':[('start','=',True)]}" readonly="1"/>
+            <group>
+              <field name="answer_1" attrs="{'invisible':[('start','=',True)]}" readonly="1"/>
+              <field name="answer_2" attrs="{'invisible':[('start','=',True)]}" readonly="1"/>
+              <field name="answer_3" attrs="{'invisible':[('start','=',True)]}" readonly="1"/>
+              <field name="answer_4" attrs="{'invisible':[('start','=',True)]}" readonly="1"/>
+              <field name="selected_answer" attrs="{'invisible':[('start','=',True)],'readonly':['|',('show_wrong_answer_message','=',True),('show_correct_answer_message','=',True)]}" />
+            </group>
+            
+            <div class="text-danger" attrs="{'invisible':[('show_wrong_answer_message','=',False)]}">
+                <i class="fa fa-times"/> Esta no es la respuesta correcta!
+            </div>
+            <div class="text-success mt-2" attrs="{'invisible':[('show_correct_answer_message','=',False)]}">
+                <i class="fa fa-check"/> Correcto!
+            </div>
+          </group>
+          <footer>
+            <button name="start_button" type="object" string="Empezar" class="btn-primary" attrs="{'invisible':[('start','=',False)]}"/>
+            <button name="check_answer" type="object" string="Verificar Respuesta" class="btn-primary" attrs="{'invisible':['|','|',('start','=',True),('show_wrong_answer_message','=',True),('show_correct_answer_message','=',True)]}"/>
+            <button name="next_question" type="object" string="Siguiente Pregunta" class="btn-default" attrs="{'invisible':['|',('start','=',True),('show_wrong_answer_message','=',False),('show_correct_answer_message','=',False)]}"/>
+          </footer>
+        </form>
+      </field>
+    </record>
+
+    <!-- actions opening views on models -->
+
+    <record model="ir.actions.act_window" id="ml_learning.action_results">
+      <field name="name">Resultados</field>
+      <field name="res_model">ml_learning.test_question</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="ml_learning.action_test">
+      <field name="name">Practicar</field>
+      <field name="res_model">ml_learning.test</field>
+      <field name="view_mode">form</field>
+      <field name="target">new</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="ml_learning.action_exercises">
+      <field name="name">Preguntas</field>
+      <field name="res_model">ml_learning.exercise</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="ml_learning.action_levels">
+      <field name="name">Niveles</field>
+      <field name="res_model">ml_learning.level</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="ml_learning.action_progress">
+      <field name="name">Progreso</field>
+      <field name="res_model">ml_learning.progress</field>
+      <field name="view_mode">form</field>
+      <field name="target">current</field>
+    </record>
+
+    <!-- Top menu item -->
+
+    <menuitem name="Aprendizaje Ingles" id="ml_learning.menu_root"/>
+
+    <!-- menu categories -->
+    <menuitem name="Mi Progreso" id="ml_learning.menu_progress" parent="ml_learning.menu_root"
+              action="ml_learning.action_progress" sequence="10"/>
+    <menuitem name="Resultados" id="ml_learning.menu_results" parent="ml_learning.menu_root"
+              action="ml_learning.action_results" sequence="20"/>
+    <menuitem name="Practicar" id="ml_learning.menu_practice" parent="ml_learning.menu_root"
+              action="ml_learning.action_test" sequence="30"/>
+    <menuitem name="Configuracion" id="ml_learning.menu_config" parent="ml_learning.menu_root" sequence="40"/>
+
+    <!-- actions -->
+
+    <menuitem name="Preguntas" id="ml_learning.exercises" parent="ml_learning.menu_config"
+              action="ml_learning.action_exercises"/>
+
+    <menuitem name="Niveles" id="ml_learning.levels" parent="ml_learning.menu_config"
+              action="ml_learning.action_levels"/>
+
+  </data>
+</odoo>
